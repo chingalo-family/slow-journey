@@ -1,0 +1,16 @@
+---
+description: Offline Drift schema, usage counters, and reserved syncStatus
+globs: "lib/core/offline_db/**/*.dart,lib/core/services/journey_repository.dart,lib/core/utils/streak.dart"
+alwaysApply: false
+---
+
+# Offline storage
+
+Follow `.cursor/skills/slow-journey-offline/SKILL.md`.
+
+- Append migrations; do not hand-edit schema version
+- Keep UUID keys and `syncStatus` on business rows
+- Update counters in the same transaction as the user action
+- After table changes: `dart run build_runner build --delete-conflicting-outputs`
+- `flutter analyze` must print **No issues found!**
+- Cover streak / complete-day / intention limits in `flutter test`

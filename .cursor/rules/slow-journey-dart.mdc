@@ -1,0 +1,17 @@
+---
+description: Dart standards for Slow Journey (comments, meaningful names, loops, analyze)
+globs: "**/*.dart"
+alwaysApply: false
+---
+
+# Dart (app code)
+
+Follow `.cursor/skills/slow-journey-project/SKILL.md`.
+
+- Do not add `//` or `/* */` comments in new or edited Dart
+- Names must be meaningful (classes, functions, variables, files). See `docs/development/naming.md`
+- Loop indexes must be descriptive (`slotIndex`, `destinationIndex`); never `i` / `j` / `k`
+- Use package imports (`package:slowjourney/...`)
+- Keep domain logic in `lib/core/services/*`, not widgets
+- Finish only when `flutter analyze` prints **No issues found!**
+- Finish only when `flutter test` passes

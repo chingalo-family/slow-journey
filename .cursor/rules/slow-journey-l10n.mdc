@@ -1,0 +1,16 @@
+---
+description: English ARB UI copy for Slow Journey
+globs: "lib/l10n/**/*.arb,lib/l10n/**/*.dart,lib/core/utils/l10n_util.dart,lib/modules/**/*.dart,lib/core/components/**/*.dart"
+alwaysApply: false
+---
+
+# Localization (English first)
+
+Follow `.cursor/skills/slow-journey-localization/SKILL.md`.
+
+- Put every user-facing label in `lib/l10n/app_en.arb`
+- No new hardcoded UI English in widgets
+- Do not add a second locale until the user asks
+- Run `flutter gen-l10n` after ARB changes
+- `flutter analyze` must print **No issues found!**
+- `flutter test` must pass

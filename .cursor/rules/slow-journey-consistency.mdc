@@ -1,0 +1,56 @@
+---
+description: Team-wide Cursor standards for Slow Journey
+alwaysApply: true
+---
+
+# Slow Journey Cursor Rule
+
+This repository is a Flutter daily-rhythm app (offline-first, Phase 1, no network).
+Follow Duka Mkononi–style quality gates adapted for this product.
+
+## Scope and stack
+- App root: `lib/`, `test/`, `android/`, `ios/`
+- Stack: Flutter, Provider, Drift + SQLite, local notifications
+- Display name: **Slow Journey**. Package id: `chingalo.family.slowjourney`
+- Always follow `.cursor/skills/slow-journey-project/SKILL.md`
+- Offline schema / counters / `syncStatus`: `.cursor/skills/slow-journey-offline/SKILL.md`
+- User-facing labels: `.cursor/skills/slow-journey-localization/SKILL.md` (`lib/l10n/app_en.arb`; English first)
+
+## Required workflow before finishing
+1. Run `git status` and `git diff`
+2. `flutter analyze` must print **No issues found!**
+3. `flutter test` must pass
+4. After Drift changes: `dart run build_runner build --delete-conflicting-outputs`
+5. After label/copy changes: update `lib/l10n/app_en.arb` and run `flutter gen-l10n`
+6. If architecture, modules, reminders, schema, or setup behavior changed, update the matching docs under `docs/`
+7. If end-user-visible behavior changed, update the matching guide under `docs/user-guides/`
+8. Do not add network, DHIS2, or Community features in Phase 1
+9. Update `.cursor/` if conventions drift
+
+## Architecture
+- Logic in `lib/core/services/*`, not widgets
+- Shared UI in `lib/core/components/*`
+- Package imports: `package:slowjourney/...`
+- Persist locally with `syncStatus`
+- Never commit secrets
+
+## Naming
+- Meaningful names; no `i` / `j` / `k` loop indexes
+- No inline `//` comments in Dart
+- Tests describe behavior
+
+## Data safety
+- Append migrations; derived schema version
+- Do not rename persisted columns casually
+
+## Documentation sync
+When behavior changes, update the relevant docs in the same change set:
+- `README.md` and `docs/README.md`
+- `docs/architecture/` (overview, offline-storage, data-sync)
+- `docs/diagrams/` (startup, navigation, module wiring)
+- `docs/features/*.md` (module/capability/brand)
+- `docs/development/*.md` (setup, env, testing, naming, localization)
+- `docs/user-guides/*.md` (friendly guides when UX/flows change)
+- `docs/plans/` only for work that is **not shipped yet**
+
+Skip docs only for pure typo/format-only edits with no behavior change.
