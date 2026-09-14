@@ -129,6 +129,7 @@ class JourneyRepository {
     required int gratitudeScore,
     String? title,
     String? photoPath,
+    List<String>? tags,
   }) {
     return db.completeDay(
       profileId: profileId,
@@ -138,6 +139,7 @@ class JourneyRepository {
       gratitudeScore: gratitudeScore,
       title: title,
       photoPath: photoPath,
+      tags: tags,
     );
   }
 

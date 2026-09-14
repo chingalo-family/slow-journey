@@ -324,6 +324,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeDay => 'Complete Day';
 
   @override
+  String get reflectionThemes => 'Themes';
+
+  @override
+  String get reflectionThemesHint =>
+      'Start with the presets. Tap to keep suggestions, reuse earlier evenings, or add a theme of your own.';
+
+  @override
+  String get reflectionAddTheme => 'Add theme';
+
+  @override
+  String get reflectionAddThemeHint => 'A short name, like Family or Craft';
+
+  @override
+  String get reflectionAddThemeConfirm => 'Add';
+
+  @override
+  String get reflectionAddThemeCancel => 'Not now';
+
+  @override
   String get dayComplete => 'Day complete';
 
   @override
@@ -598,20 +617,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get remindersInvitation =>
       'Reminders stay on this device. They are invitations, never nags.';
-
-  @override
-  String get sendTestReminder => 'Send a test notification';
-
-  @override
-  String get testReminderScheduled =>
-      'A test will appear in a few seconds. You can leave Slow Journey so it shows in the notification list.';
-
-  @override
-  String get notificationTestTitle => 'Slow Journey is here';
-
-  @override
-  String get notificationTestBody =>
-      'Reminders will appear here at your chosen times.';
 
   @override
   String get notificationsOsBlocked =>

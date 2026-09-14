@@ -1,4 +1,6 @@
 class LearningTags {
+  static const maxLabelLength = 24;
+
   static const catalog = <String>[
     'Mindfulness',
     'Focus',
@@ -8,6 +10,71 @@ class LearningTags {
     'Movement',
     'Presence',
   ];
+
+  static const _byLower = <String, String>{
+    'mindfulness': 'Mindfulness',
+    'focus': 'Focus',
+    'rest': 'Rest',
+    'discipline': 'Discipline',
+    'gratitude': 'Gratitude',
+    'movement': 'Movement',
+    'presence': 'Presence',
+  };
+
+  static String? normalize(String raw) {
+    final collapsed = raw.trim().replaceAll(RegExp(r'\s+'), ' ');
+    if (collapsed.isEmpty || collapsed.length > maxLabelLength) {
+      return null;
+    }
+    if (!RegExp(r'[A-Za-z]').hasMatch(collapsed)) {
+      return null;
+    }
+    final catalogMatch = _byLower[collapsed.toLowerCase()];
+    if (catalogMatch != null) {
+      return catalogMatch;
+    }
+    final words = collapsed.split(' ');
+    return [
+      for (final word in words)
+        word.isEmpty
+            ? word
+            : '${word[0].toUpperCase()}${word.substring(1)}',
+    ].join(' ');
+  }
+
+  static List<String> sanitize(Iterable<String> chosen) {
+    final unique = <String>[];
+    final seen = <String>{};
+    for (final raw in chosen) {
+      final match = normalize(raw);
+      if (match != null && seen.add(match)) {
+        unique.add(match);
+      }
+    }
+    return unique;
+  }
+
+  static List<String> pickerOrder({
+    Iterable<String> previouslyUsed = const [],
+  }) {
+    final used = sanitize(previouslyUsed);
+    final seen = used.toSet();
+    return [
+      ...used,
+      ...catalog.where((label) => !seen.contains(label)),
+    ];
+  }
+
+  static List<String> resolve({
+    required String learning,
+    required String wins,
+    List<String>? chosen,
+  }) {
+    if (chosen != null) {
+      return sanitize(chosen);
+    }
+    return infer(learning, wins);
+  }
 
   static List<String> infer(String learning, String wins) {
     final blob = '${learning.toLowerCase()} ${wins.toLowerCase()}';

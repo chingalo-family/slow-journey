@@ -166,23 +166,50 @@ class SjCard extends StatelessWidget {
 }
 
 class SjChip extends StatelessWidget {
-  const SjChip({super.key, required this.label});
+  const SjChip({
+    super.key,
+    required this.label,
+    this.selected = false,
+    this.onSelected,
+  });
 
   final String label;
+  final bool selected;
+  final ValueChanged<bool>? onSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
+    final ink = context.isDarkTheme ? AppColors.darkText : AppColors.ink600;
+    final fill = context.isDarkTheme
+        ? AppColors.darkBanner
+        : AppColors.mistChip;
+    final labelStyle = TextStyle(
+      fontFamily: AppTheme.nunito,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: ink,
+    );
+    if (onSelected == null) {
+      return Chip(
+        label: Text(label),
+        visualDensity: VisualDensity.compact,
+        backgroundColor: fill,
+        labelStyle: labelStyle,
+        side: BorderSide.none,
+      );
+    }
+    return FilterChip(
       label: Text(label),
+      selected: selected,
+      onSelected: onSelected,
+      showCheckmark: false,
       visualDensity: VisualDensity.compact,
-      backgroundColor: AppColors.mistChip,
-      labelStyle: const TextStyle(
-        fontFamily: AppTheme.nunito,
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-        color: AppColors.ink600,
+      selectedColor: fill,
+      backgroundColor: Colors.transparent,
+      labelStyle: labelStyle,
+      side: BorderSide(
+        color: selected ? Colors.transparent : context.sjHairline,
       ),
-      side: BorderSide.none,
     );
   }
 }

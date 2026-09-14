@@ -143,7 +143,7 @@ class AppDatabase extends _$AppDatabase {
 
   Future<List<Reflection>> reflectionsPaged(
     String profileId, {
-    int limit = 80,
+    int limit = 400,
   }) {
     return (select(reflections)
           ..where((t) => t.profileId.equals(profileId))
@@ -167,6 +167,7 @@ class AppDatabase extends _$AppDatabase {
     required int gratitudeScore,
     String? title,
     String? photoPath,
+    List<String>? tags,
   }) async {
     await transaction(() async {
       final now = DateTime.now().toIso8601String();
@@ -189,8 +190,12 @@ class AppDatabase extends _$AppDatabase {
       );
 
       await (delete(keyLearnings)..where((t) => t.reflectionId.equals(id))).go();
-      final tags = LearningTags.infer(learning, wins);
-      for (final tag in tags) {
+      final storedTags = LearningTags.resolve(
+        learning: learning,
+        wins: wins,
+        chosen: tags,
+      );
+      for (final tag in storedTags) {
         await into(keyLearnings).insert(
           KeyLearningsCompanion.insert(
             id: _uuid.v4(),
@@ -198,17 +203,8 @@ class AppDatabase extends _$AppDatabase {
             label: tag,
           ),
         );
-        final current = await (select(learningTagCounts)
-              ..where((t) => t.profileId.equals(profileId) & t.label.equals(tag)))
-            .getSingleOrNull();
-        await into(learningTagCounts).insertOnConflictUpdate(
-          LearningTagCountsCompanion.insert(
-            profileId: profileId,
-            label: tag,
-            count: Value((current?.count ?? 0) + (existing == null ? 1 : 0)),
-          ),
-        );
       }
+      await rebuildTagCounts(profileId);
 
       final dates = await (select(reflections)
             ..where((t) => t.profileId.equals(profileId)))
@@ -327,6 +323,29 @@ class AppDatabase extends _$AppDatabase {
           ..where((t) => t.profileId.equals(profileId)))
         .get();
     return {for (final r in rows) r.label: r.count};
+  }
+
+  Future<void> rebuildTagCounts(String profileId) async {
+    await (delete(learningTagCounts)
+          ..where((t) => t.profileId.equals(profileId)))
+        .go();
+    final rows = await customSelect(
+      'SELECT key_learning.label AS label, COUNT(*) AS c '
+      'FROM key_learning INNER JOIN reflection '
+      'ON reflection.id = key_learning.reflection_id '
+      'WHERE reflection.profile_id = ? GROUP BY key_learning.label',
+      variables: [Variable.withString(profileId)],
+      readsFrom: {keyLearnings, reflections},
+    ).get();
+    for (final row in rows) {
+      await into(learningTagCounts).insert(
+        LearningTagCountsCompanion.insert(
+          profileId: profileId,
+          label: row.read<String>('label'),
+          count: Value(row.read<int>('c')),
+        ),
+      );
+    }
   }
 
   Future<Insight?> insightForPeriod(String profileId, String period) {

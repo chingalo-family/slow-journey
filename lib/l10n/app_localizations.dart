@@ -646,6 +646,42 @@ abstract class AppLocalizations {
   /// **'Complete Day'**
   String get completeDay;
 
+  /// No description provided for @reflectionThemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Themes'**
+  String get reflectionThemes;
+
+  /// No description provided for @reflectionThemesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with the presets. Tap to keep suggestions, reuse earlier evenings, or add a theme of your own.'**
+  String get reflectionThemesHint;
+
+  /// No description provided for @reflectionAddTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Add theme'**
+  String get reflectionAddTheme;
+
+  /// No description provided for @reflectionAddThemeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A short name, like Family or Craft'**
+  String get reflectionAddThemeHint;
+
+  /// No description provided for @reflectionAddThemeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get reflectionAddThemeConfirm;
+
+  /// No description provided for @reflectionAddThemeCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get reflectionAddThemeCancel;
+
   /// No description provided for @dayComplete.
   ///
   /// In en, this message translates to:
@@ -1107,30 +1143,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reminders stay on this device. They are invitations, never nags.'**
   String get remindersInvitation;
-
-  /// No description provided for @sendTestReminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Send a test notification'**
-  String get sendTestReminder;
-
-  /// No description provided for @testReminderScheduled.
-  ///
-  /// In en, this message translates to:
-  /// **'A test will appear in a few seconds. You can leave Slow Journey so it shows in the notification list.'**
-  String get testReminderScheduled;
-
-  /// No description provided for @notificationTestTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Slow Journey is here'**
-  String get notificationTestTitle;
-
-  /// No description provided for @notificationTestBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders will appear here at your chosen times.'**
-  String get notificationTestBody;
 
   /// No description provided for @notificationsOsBlocked.
   ///

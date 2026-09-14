@@ -7,6 +7,8 @@ class PreferenceService {
 
   final SharedPreferences _prefs;
 
+  static const defaultMorningTime = '07:00';
+  static const defaultEveningTime = '21:00';
   static const _kOnboarding = 'has_completed_onboarding';
   static const _kProfileId = 'last_profile_id';
   static const _kTheme = 'app_theme';
@@ -30,8 +32,25 @@ class PreferenceService {
 
   bool get morningReminderOn => _prefs.getBool(_kMorningOn) ?? true;
   bool get eveningReminderOn => _prefs.getBool(_kEveningOn) ?? true;
-  String get morningTime => _prefs.getString(_kMorningTime) ?? '07:00';
-  String get eveningTime => _prefs.getString(_kEveningTime) ?? '21:00';
+  String get morningTime =>
+      _prefs.getString(_kMorningTime) ?? defaultMorningTime;
+  String get eveningTime =>
+      _prefs.getString(_kEveningTime) ?? defaultEveningTime;
+
+  Future<void> ensureReminderDefaultsPersisted() async {
+    if (!_prefs.containsKey(_kMorningOn)) {
+      await _prefs.setBool(_kMorningOn, true);
+    }
+    if (!_prefs.containsKey(_kEveningOn)) {
+      await _prefs.setBool(_kEveningOn, true);
+    }
+    if (!_prefs.containsKey(_kMorningTime)) {
+      await _prefs.setString(_kMorningTime, defaultMorningTime);
+    }
+    if (!_prefs.containsKey(_kEveningTime)) {
+      await _prefs.setString(_kEveningTime, defaultEveningTime);
+    }
+  }
 
   Future<void> setMorningReminder({required bool on, required String time}) async {
     await _prefs.setBool(_kMorningOn, on);

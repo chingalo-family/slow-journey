@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,7 +16,6 @@ class LocalNotificationService {
 
   static const morningId = 1001;
   static const eveningId = 1002;
-  static const testId = 1099;
   static const morningHorizonStart = 2100;
   static const eveningHorizonStart = 2200;
   static const horizonDays = 21;
@@ -167,34 +165,6 @@ class LocalNotificationService {
         payload: 'evening',
         copyForDate: (date) => NotificationCopyPack.eveningForDate(date, l10n),
       );
-    }
-  }
-
-  Future<bool> scheduleTestReminder() async {
-    final granted = await requestPermissionIfNeeded();
-    if (!granted || !_initialized) {
-      return false;
-    }
-    await ensureLocalTimezone();
-    await _ensureAndroidChannel();
-    await _plugin.cancel(testId);
-    final l10n = L10nUtil.english();
-    final morning = NotificationCopyPack.morning(l10n);
-    final copy = morning[Random().nextInt(morning.length)];
-    final fire = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 8));
-    try {
-      await _plugin.zonedSchedule(
-        testId,
-        copy.title,
-        copy.body,
-        fire,
-        await _details(copy.body),
-        androidScheduleMode: await _androidScheduleMode(),
-        payload: 'test',
-      );
-      return true;
-    } catch (_) {
-      return false;
     }
   }
 
