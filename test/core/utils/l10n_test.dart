@@ -10,6 +10,7 @@ void main() {
     expect(l10n.tagline, 'Pause · Reflect · Grow');
     expect(l10n.getStarted, 'Get Started');
     expect(l10n.completeDay, 'Complete Day');
+    expect(l10n.reflectionThemes, 'Themes');
     expect(l10n.welcomeBackName('Joseph'), 'Welcome back, Joseph');
     expect(l10n.enterLocalPin, 'Enter your four-digit PIN to continue.');
   });

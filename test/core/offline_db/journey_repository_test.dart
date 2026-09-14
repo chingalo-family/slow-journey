@@ -121,6 +121,51 @@ void main() {
     expect((await repository.counters(profile.id)).totalReflections, 1);
   });
 
+  test('complete day stores chosen tags and rebuilds totals on edit', () async {
+    final profile = await repository.createProfile(name: 'Alex');
+    await repository.completeDay(
+      profileId: profile.id,
+      date: '2026-09-11',
+      learning: 'Morning meditation',
+      wins: 'A calm walk',
+      gratitudeScore: 3,
+      tags: ['Focus'],
+    );
+    var stored = await repository.reflection(profile.id, '2026-09-11');
+    expect(stored?.tags, ['Focus']);
+    expect(await repository.tags(profile.id), {'Focus': 1});
+
+    await repository.completeDay(
+      profileId: profile.id,
+      date: '2026-09-11',
+      learning: 'Morning meditation',
+      wins: 'A calm walk',
+      gratitudeScore: 3,
+      tags: ['Rest', 'Gratitude'],
+    );
+    stored = await repository.reflection(profile.id, '2026-09-11');
+    expect(stored?.tags, ['Rest', 'Gratitude']);
+    expect(await repository.tags(profile.id), {
+      'Rest': 1,
+      'Gratitude': 1,
+    });
+  });
+
+  test('complete day stores a custom theme', () async {
+    final profile = await repository.createProfile(name: 'Alex');
+    await repository.completeDay(
+      profileId: profile.id,
+      date: '2026-09-11',
+      learning: 'Cooked with my sister',
+      wins: 'We lingered at the table',
+      gratitudeScore: 4,
+      tags: ['Family'],
+    );
+    final stored = await repository.reflection(profile.id, '2026-09-11');
+    expect(stored?.tags, ['Family']);
+    expect(await repository.tags(profile.id), {'Family': 1});
+  });
+
   test('update profile persists a birthday', () async {
     final profile = await repository.createProfile(name: 'Alex');
     await repository.updateProfile(profile.copyWith(birthday: '1994-10-12'));

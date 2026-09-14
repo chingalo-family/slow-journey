@@ -87,5 +87,46 @@ void main() {
         ['Presence'],
       );
     });
+
+    test('sanitize keeps catalog ids and custom theme names', () {
+      expect(
+        LearningTags.sanitize(['focus', 'family dinner', 'Rest', 'FOCUS', '']),
+        ['Focus', 'Family Dinner', 'Rest'],
+      );
+    });
+
+    test('normalize maps presets and rejects empty labels', () {
+      expect(LearningTags.normalize('  gratitude '), 'Gratitude');
+      expect(LearningTags.normalize('self-care'), 'Self-care');
+      expect(LearningTags.normalize('   '), isNull);
+      expect(LearningTags.normalize('123'), isNull);
+    });
+
+    test('picker order puts previously used catalog and custom tags first', () {
+      expect(
+        LearningTags.pickerOrder(previouslyUsed: ['Gratitude', 'Family']),
+        [
+          'Gratitude',
+          'Family',
+          'Mindfulness',
+          'Focus',
+          'Rest',
+          'Discipline',
+          'Movement',
+          'Presence',
+        ],
+      );
+    });
+
+    test('resolve prefers chosen tags over inferred keywords', () {
+      expect(
+        LearningTags.resolve(
+          learning: 'Morning meditation',
+          wins: 'A calm walk',
+          chosen: ['Focus'],
+        ),
+        ['Focus'],
+      );
+    });
   });
 }
