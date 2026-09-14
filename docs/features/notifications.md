@@ -26,14 +26,28 @@ Exact alarms are used when the OS allows; otherwise `inexactAllowWhileIdle`.
 
 ## Permission
 
-- Initialize **without** prompting (iOS `request*Permission: false`).
-- Opening Setup → Notifications, or turning a reminder **on**, calls `requestPermissionIfNeeded`.
+- Initialize **without** prompting (iOS `request*Permission: false`) so splash is not blocked.
+- After a local profile exists, entering **Feed** (`AppShell`) and finishing **Get Started** call `activateDefaultReminders`: request OS notification (and exact-alarm) permission, then schedule.
+- Opening Setup → Notifications, or turning a reminder **on**, also calls `requestPermissionIfNeeded`.
 - If the OS blocks notifications, the screen shows `notificationsOsBlocked`.
 - App resume calls `syncFromPreferences` so a later grant is picked up and the 21-day copy window is rewritten.
 
 ## Android
 
-- `POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`, `VIBRATE`, `WAKE_LOCK`
+Declared in `android/app/src/main/AndroidManifest.xml` (release and debug):
+
+| Permission | Why |
+|------------|-----|
+| `POST_NOTIFICATIONS` | Android 13+ reminder banners |
+| `RECEIVE_BOOT_COMPLETED` | Reschedule after reboot |
+| `VIBRATE` | Channel vibration |
+| `WAKE_LOCK` | Alarm delivery |
+| `SCHEDULE_EXACT_ALARM` | Morning/evening clock times when the user grants exact alarms |
+
+Do **not** declare `USE_EXACT_ALARM`. Play only allows that for calendar/alarm-clock apps. Slow Journey requests exact alarms at runtime via `requestExactAlarmsPermission()` and falls back to inexact when the OS denies it.
+
+Do **not** declare `INTERNET` in the main manifest (debug/profile only, for Flutter tooling).
+
 - Boot receivers from `flutter_local_notifications` so schedules survive reboot
 - Status icon `@drawable/ic_stat_notification`
 
@@ -41,7 +55,7 @@ Exact alarms are used when the OS allows; otherwise `inexactAllowWhileIdle`.
 
 - `UNUserNotificationCenter` delegate set in `AppDelegate`
 - Alert, badge, and sound requested when the user enables reminders
-- Pending-notification limit stays well under 64 (21 morning + 21 evening + test)
+- Pending-notification limit stays well under 64 (21 morning + 21 evening)
 
 ## Out of scope (Phase 1)
 

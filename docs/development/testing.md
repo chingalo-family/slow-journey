@@ -31,7 +31,8 @@ test/
 |------|----------|
 | Repository | create profile, max three intentions, complete day / streak |
 | Utils | `AppDate`, learning tags, PIN hasher, session lock, reminder schedule, l10n |
-| Widgets | Daily cycle primer (English delegates via `wrapWithEnglishL10n`) |
+| Prefs | Reminder defaults 07:00 / 21:00 |
+| Widgets | Daily cycle primer, learning tag picker (English delegates via `wrapWithEnglishL10n`) |
 
 Widget tests that show copy must wrap with `test/helpers/l10n_harness.dart`. Drift tests use `AppDatabase.createTestDatabase()`.
 

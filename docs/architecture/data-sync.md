@@ -11,7 +11,7 @@ Phase 1 does **not** upload or download. The daily loop is airplane-mode safe.
 | Create profile | None | SQLite `notSynced` |
 | Set intentions | None | Replace rows for that date |
 | Toggle intention done | None | Local update, `notSynced` |
-| Complete Day | None | Transaction: reflection + tags + counters |
+| Complete Day | None | Transaction: reflection + chosen or inferred tags + counters |
 | Reminders | None | OS scheduler + SharedPreferences |
 | Export | None | JSON file on device |
 | Wipe | None | Clear SQLite + prefs |

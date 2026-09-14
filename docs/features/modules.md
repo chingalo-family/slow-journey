@@ -12,11 +12,11 @@ Each feature lives under `lib/modules/`. On phones in portrait, `AppShell` uses 
 | **Local profile** | `onboarding/welcome_profile_page.dart` | Implemented | Name plus optional email and birthday |
 | **Morning intentions** | `intentions/morning_intentions_page.dart` | Implemented | Up to three aims, Set My Day |
 | **Planner** | `planner/planner_page.dart` | Implemented | Week or month calendar, checklist, wisdom quote, start reflection |
-| **Evening reflection** | `reflection/evening_reflection_page.dart` | Implemented | Learning, wins, gratitude, cropped photo (16:9 default), full-screen viewer; fades into a full **Day complete** rest screen |
+| **Evening reflection** | `reflection/evening_reflection_page.dart` | Implemented | Learning, wins, preset theme chips plus add-your-own, gratitude, cropped photo (16:9 default), full-screen viewer; fades into a full **Day complete** rest screen |
 | **Journey feed** | `journey_feed/journey_feed_page.dart` | Implemented | Journal cards, streak chip, empty-state invitation |
 | **Growth** | `growth/growth_page.dart` | Implemented | Combined stats, weekly evening chart with labels, ranked learning tags, monthly insight |
 | **Setup** | `settings/manage_profile_page.dart` | Implemented | Grouped profile, notifications, muted dark, PIN and auto-lock, wipe |
-| **Notifications** | `settings/notification_settings_page.dart` | Implemented | Plan My Day / Reflect & Celebrate times |
+| **Notifications** | `settings/notification_settings_page.dart` | Implemented | Asks for permission on first home screen; defaults 7:00 AM / 9:00 PM, changeable here |
 | **Shell** | `shell/app_shell.dart` | Implemented | Floating Feed · Planner · Growth · Setup pill on portrait phones; landscape and large screens use a rail with icon, label, and sage hairline |
 
 **Not in Phase 1:** Community Circle tab, cloud account, Data Sync.

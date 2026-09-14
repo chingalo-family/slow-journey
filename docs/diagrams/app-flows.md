@@ -53,10 +53,11 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  setup[Setup Notifications] --> perm[Request OS permission]
-  perm -->|Granted| sched[zonedSchedule 21 morning + 21 evening copies]
-  perm -->|Denied| blocked[Show OS blocked copy]
-  test[Send a test notification] --> testFire[One-shot in about 8 seconds]
+  enter[Enter Feed or finish Get Started] --> perm[Request OS permission]
+  perm -->|Granted| sched[zonedSchedule 21 morning 07:00 + 21 evening 21:00 unless changed]
+  perm -->|Denied| blocked[Show OS blocked copy in Settings]
+  setup[Setup Notifications] --> change[Change time or toggle]
+  change --> sched
   resume[App resumed] --> sched
   boot[Android BOOT_COMPLETED] --> plugin[Plugin boot receiver]
   plugin --> fire[Fire at next matching local time]

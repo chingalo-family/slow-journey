@@ -47,6 +47,8 @@ flutter build appbundle --release
 flutter build ios --release
 ```
 
+Release Android uses `android/app/src/main/AndroidManifest.xml` (debug/profile overlays are not packaged). That manifest already declares reminder permissions (`POST_NOTIFICATIONS`, boot, vibrate, wake lock, `SCHEDULE_EXACT_ALARM`), gallery access on Android 12 and below (`READ_EXTERNAL_STORAGE` with `maxSdkVersion="32"`), uCrop, notification receivers, and image-picker queries. Android 13+ uses the system Photo Picker, so do not add `READ_MEDIA_IMAGES` or `CAMERA` (the app only picks from the gallery). Do not add `USE_EXACT_ALARM` (Play Store clock-app exemption) or `INTERNET` in the main manifest.
+
 ## Quality gates
 
 ```bash

@@ -16,7 +16,7 @@ Slow Journey is a calm daily rhythm: up to three morning intentions, an evening 
 2. Read **Your Daily Cycle** (morning intentions, evening reflection).
 3. Tap **Get Started**.
 4. Enter **your name**. Email and birthday are optional.
-5. Tap **Begin**. You may set three intentions, or skip and land on **Feed**.
+5. Tap **Begin**. You may set three intentions, or skip and land on **Feed**. The phone may ask to allow notifications so morning and evening reminders can fire at **7:00 AM** and **9:00 PM** (change anytime in Setup).
 
 You can add a PIN later in Setup. Nothing is sent to a server.
 

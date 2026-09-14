@@ -47,7 +47,7 @@ Prefix by area: `nav*`, `onboarding*`, `intention*`, `planner*`, `reflection*`, 
 
 ## Stable codes vs labels
 
-Learning-tag **IDs** stay English in SQLite (`Mindfulness`, `Rest`, …). Show them with `L10nUtil.learningTagLabel`. Do not translate profile names, user-written intentions, or reflection body text.
+Learning-tag **IDs** stay English in SQLite (`Mindfulness`, `Rest`, …). Show them with `L10nUtil.learningTagLabel`. Custom themes the person types are stored and shown as written. Do not translate profile names, user-written intentions, custom theme names, or reflection body text.
 
 ## Agent skill
 

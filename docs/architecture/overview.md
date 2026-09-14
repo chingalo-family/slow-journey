@@ -43,6 +43,7 @@ Also registered as `Provider` (not notifiers): `AppDatabase`, `JourneyRepository
 **App-level wiring:**
 
 - `main()` loads `.env`, initializes local notifications, opens Drift, then `syncFromPreferences` so reminders match stored times.
+- After the user reaches **Feed** (and after Get Started), Slow Journey requests notification permission and schedules **Plan My Day** at **07:00** and **Reflect & Celebrate** at **21:00** unless the user changed them in Setup.
 - `MyApp` bootstraps profile and day/feed/growth after first frame. If a PIN is set, a cold start shows `PinUnlockPage`. Auto-lock is optional: after 2, 5, or 10 minutes with the app inactive (paused or hidden), returning shows the PIN again. Switching away briefly does not lock. Reminders reschedule on resume.
 - `AppShell` is the Phase 1 home, opening on **Feed**. Portrait phones use a floating pill; landscape and large screens use a sage navigation rail (icon + label) with a cream-sage hairline.
 

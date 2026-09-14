@@ -71,7 +71,7 @@ Current version: **4** (three upgrade steps after the base schema).
 
 - Max **3** intentions per profile and date
 - **One** reflection per profile and date
-- **Complete Day** writes reflection, tags, and usage counters in **one transaction**
+- **Complete Day** writes reflection, chosen or inferred tags, and usage counters in **one transaction**. Tag totals are rebuilt from `key_learning` so edits stay accurate.
 - Current streak uses consecutive completed reflection dates (`StreakCalculator`)
 - Do not rename persisted columns for style
 
