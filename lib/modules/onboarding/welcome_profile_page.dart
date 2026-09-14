@@ -38,6 +38,8 @@ class _WelcomeProfilePageState extends State<WelcomeProfilePage> {
           birthday: _birthday == null ? null : AppDate.isoDate(_birthday),
         );
     if (!mounted) return;
+    await context.read<SettingsState>().activateDefaultReminders();
+    if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MorningIntentionsPage(asOnboarding: true),

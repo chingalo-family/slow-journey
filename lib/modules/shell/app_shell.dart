@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../app_state/app_state.dart';
 import '../../core/components/sj_bottom_nav.dart';
 import '../../core/components/sj_side_nav.dart';
 import '../../core/constants/sj_layout.dart';
@@ -27,6 +29,17 @@ class _AppShellState extends State<AppShell> {
     GrowthPage(),
     SetupPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      context.read<SettingsState>().activateDefaultReminders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

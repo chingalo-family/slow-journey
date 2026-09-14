@@ -4,12 +4,14 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/app_state.dart';
 import '../../core/components/journey_widgets.dart';
+import '../../core/components/learning_tag_picker.dart';
 import '../../core/components/sj_buttons.dart';
 import '../../core/components/sj_journey_photo.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_theme.dart';
 import '../../core/services/photo_capture_service.dart';
 import '../../core/utils/l10n_util.dart';
+import '../../core/utils/learning_tags.dart';
 import 'day_complete_page.dart';
 import 'journey_photo_viewer_page.dart';
 
@@ -27,18 +29,36 @@ class _EveningReflectionPageState extends State<EveningReflectionPage> {
   int _gratitude = 4;
   String? _photoPath;
   bool _busy = false;
+  var _tagsTouched = false;
+  final _selectedTags = <String>{};
+  var _optionTags = LearningTags.catalog;
+  var _knownTags = const <String>[];
 
   @override
   void initState() {
     super.initState();
     final existing = context.read<DailyState>().reflection;
+    final previous = context.read<GrowthState>().tags.keys;
     if (existing != null) {
       _learning.text = existing.learning;
       _wins.text = existing.wins;
       _title.text = existing.title ?? '';
       _gratitude = existing.gratitudeScore;
       _photoPath = existing.photoPath;
+      final stored = LearningTags.sanitize(existing.tags);
+      if (stored.isNotEmpty) {
+        _selectedTags.addAll(stored);
+        _tagsTouched = true;
+      } else {
+        _selectedTags.addAll(
+          LearningTags.infer(existing.learning, existing.wins),
+        );
+      }
     }
+    _knownTags = [...previous];
+    _optionTags = LearningTags.pickerOrder(
+      previouslyUsed: [..._knownTags, ..._selectedTags],
+    );
   }
 
   @override
@@ -107,6 +127,7 @@ class _EveningReflectionPageState extends State<EveningReflectionPage> {
           gratitude: _gratitude,
           title: _title.text.trim().isEmpty ? null : _title.text.trim(),
           photoPath: _photoPath,
+          tags: _selectedTags.toList(),
         );
     if (!mounted) return;
     await context.read<JourneyFeedState>().load(profile.id);
@@ -125,6 +146,49 @@ class _EveningReflectionPageState extends State<EveningReflectionPage> {
         transitionDuration: const Duration(milliseconds: 420),
       ),
     );
+  }
+
+  void _syncSuggestedTags() {
+    setState(() {
+      if (_tagsTouched) {
+        return;
+      }
+      _selectedTags
+        ..clear()
+        ..addAll(LearningTags.infer(_learning.text, _wins.text));
+    });
+  }
+
+  void _toggleTag(String tagId) {
+    setState(() {
+      _tagsTouched = true;
+      if (!_selectedTags.add(tagId)) {
+        _selectedTags.remove(tagId);
+      }
+    });
+  }
+
+  void _refreshThemeOptions() {
+    _optionTags = LearningTags.pickerOrder(
+      previouslyUsed: [..._knownTags, ..._selectedTags],
+    );
+  }
+
+  Future<void> _addTheme() async {
+    final entered = await showDialog<String>(
+      context: context,
+      builder: (_) => const _AddThemeDialog(),
+    );
+    final label = LearningTags.normalize(entered ?? '');
+    if (label == null || !mounted) {
+      return;
+    }
+    setState(() {
+      _tagsTouched = true;
+      _knownTags = [..._knownTags, label];
+      _selectedTags.add(label);
+      _refreshThemeOptions();
+    });
   }
 
   @override
@@ -217,7 +281,7 @@ class _EveningReflectionPageState extends State<EveningReflectionPage> {
                 TextField(
                   controller: _learning,
                   maxLines: 4,
-                  onChanged: (_) => setState(() {}),
+                  onChanged: (_) => _syncSuggestedTags(),
                   decoration: InputDecoration(
                     hintText: l10n.learnHint,
                     filled: true,
@@ -240,12 +304,37 @@ class _EveningReflectionPageState extends State<EveningReflectionPage> {
                 TextField(
                   controller: _wins,
                   maxLines: 4,
-                  onChanged: (_) => setState(() {}),
+                  onChanged: (_) => _syncSuggestedTags(),
                   decoration: InputDecoration(
                     hintText: l10n.winsHint,
                     filled: true,
                     fillColor: context.sjInputFill,
                   ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+          SjCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _PromptHeader(
+                  icon: Icons.label_outline,
+                  title: l10n.reflectionThemes,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n.reflectionThemesHint,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 12),
+                LearningTagPicker(
+                  optionIds: _optionTags,
+                  selectedIds: _selectedTags,
+                  onToggle: _toggleTag,
+                  addLabel: l10n.reflectionAddTheme,
+                  onAdd: _addTheme,
                 ),
               ],
             ),
@@ -308,6 +397,55 @@ class _PromptHeader extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Text(title, style: Theme.of(context).textTheme.titleMedium),
+      ],
+    );
+  }
+}
+
+class _AddThemeDialog extends StatefulWidget {
+  const _AddThemeDialog();
+
+  @override
+  State<_AddThemeDialog> createState() => _AddThemeDialogState();
+}
+
+class _AddThemeDialogState extends State<_AddThemeDialog> {
+  final _draft = TextEditingController();
+
+  @override
+  void dispose() {
+    _draft.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    Navigator.pop(context, _draft.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AlertDialog(
+      title: Text(l10n.reflectionAddTheme),
+      content: TextField(
+        controller: _draft,
+        autofocus: true,
+        textCapitalization: TextCapitalization.words,
+        maxLength: LearningTags.maxLabelLength,
+        decoration: InputDecoration(
+          hintText: l10n.reflectionAddThemeHint,
+        ),
+        onSubmitted: (_) => _submit(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.reflectionAddThemeCancel),
+        ),
+        TextButton(
+          onPressed: _submit,
+          child: Text(l10n.reflectionAddThemeConfirm),
+        ),
       ],
     );
   }

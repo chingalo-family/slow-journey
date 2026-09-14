@@ -94,7 +94,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(l10n.planMyDay),
-                  subtitle: Text(settings.morningTime),
+                  subtitle: Text(_displayTime(context, settings.morningTime)),
                   value: settings.morningOn,
                   onChanged: _onMorningChanged,
                 ),
@@ -126,7 +126,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(l10n.reflectCelebrate),
-                  subtitle: Text(settings.eveningTime),
+                  subtitle: Text(_displayTime(context, settings.eveningTime)),
                   value: settings.eveningOn,
                   onChanged: _onEveningChanged,
                 ),
@@ -151,26 +151,6 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          SjGhostButton(
-            label: l10n.sendTestReminder,
-            onPressed: () async {
-              final notifications = context.read<LocalNotificationService>();
-              final scheduled = await notifications.scheduleTestReminder();
-              if (!context.mounted) {
-                return;
-              }
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    scheduled
-                        ? l10n.testReminderScheduled
-                        : l10n.notificationsOsBlocked,
-                  ),
-                ),
-              );
-            },
-          ),
           const SizedBox(height: 18),
           Text(
             l10n.remindersInvitation,
@@ -185,6 +165,9 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
     final clock = hhmm.split(':');
     return TimeOfDay(hour: int.parse(clock[0]), minute: int.parse(clock[1]));
   }
+
+  String _displayTime(BuildContext context, String hhmm) =>
+      _parse(hhmm).format(context);
 
   String _fmt(TimeOfDay time) =>
       '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
