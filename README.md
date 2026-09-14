@@ -55,3 +55,27 @@ App documentation lives under [`docs/`](docs/README.md):
 - [`docs/plans/`](docs/plans/README.md) — not-yet-shipped work
 
 Keep docs, Cursor skills/rules, and implementation changes aligned in the same change set.
+
+## Environment
+
+Copy [`.env.example`](.env.example) to `.env` before the first run. `lib/main.dart` loads `.env` via `flutter_dotenv`. Phase 1 has no secrets and no network.
+
+| Variable | Description |
+|----------|-------------|
+| `APP_NAME` | Display name (`Slow Journey`) |
+| `APP_ENV` | Environment label (`phase1`) |
+| `OFFLINE_ONLY` | Must stay `true` in Phase 1 |
+
+Details: [`docs/development/environment.md`](docs/development/environment.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security
+
+Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
+
+## License
+
+Copyright (c) 2026, **CFIS (Chingalo Family Information System)**. Licensed under the [BSD 3-Clause License](LICENSE).

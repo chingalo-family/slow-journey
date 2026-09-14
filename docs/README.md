@@ -34,6 +34,7 @@ Working documents for work that is **not shipped yet**. After implementation, up
 
 | Document | Description |
 |----------|-------------|
+| [Getting started (contributors)](./GETTING_STARTED.md) | Clone, env, run, test, project tree |
 | [Setup](./development/setup.md) | Prerequisites, install, run, build |
 | [Environment variables](./development/environment.md) | `.env` configuration reference |
 | [Testing](./development/testing.md) | Unit tests and running the suite |
