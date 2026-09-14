@@ -9,6 +9,7 @@ Shared Cursor configuration, adapted from Duka Mkononi’s project skills.
 - Skill: `.cursor/skills/slow-journey-project/SKILL.md` (**always follow**)
 - Skill: `.cursor/skills/slow-journey-offline/SKILL.md` (offline DB, counters, reserved syncStatus)
 - Skill: `.cursor/skills/slow-journey-localization/SKILL.md` (English ARB; update on every label change)
+- Skill: `.cursor/skills/slow-journey-community-docs/SKILL.md` (README, CONTRIBUTING, SECURITY, CoC, GETTING_STARTED, GitHub templates)
 
 ## Reused from Duka Mkononi
 - Layered Flutter + Provider + Drift layout

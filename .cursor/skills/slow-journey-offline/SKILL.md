@@ -38,7 +38,7 @@ DB file: `slow_journey_app_db.db`
 - Incomplete intentions do not carry over punitively
 - Tests use `AppDatabase.createTestDatabase()` / `test/helpers/test_database.dart`
 
-Narrative docs: `docs/architecture/offline-storage.md`.
+Narrative docs: `docs/architecture/offline-storage.md`. If DB file name, Phase 1 sync story, or security-relevant storage changes, also follow `.cursor/skills/slow-journey-community-docs/SKILL.md`.
 
 ## Workflow — schema change
 ```

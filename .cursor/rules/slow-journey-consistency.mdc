@@ -15,6 +15,7 @@ Follow Duka Mkononi–style quality gates adapted for this product.
 - Always follow `.cursor/skills/slow-journey-project/SKILL.md`
 - Offline schema / counters / `syncStatus`: `.cursor/skills/slow-journey-offline/SKILL.md`
 - User-facing labels: `.cursor/skills/slow-journey-localization/SKILL.md` (`lib/l10n/app_en.arb`; English first)
+- Contributor / OSS files: `.cursor/skills/slow-journey-community-docs/SKILL.md`
 
 ## Required workflow before finishing
 1. Run `git status` and `git diff`
@@ -24,8 +25,9 @@ Follow Duka Mkononi–style quality gates adapted for this product.
 5. After label/copy changes: update `lib/l10n/app_en.arb` and run `flutter gen-l10n`
 6. If architecture, modules, reminders, schema, or setup behavior changed, update the matching docs under `docs/`
 7. If end-user-visible behavior changed, update the matching guide under `docs/user-guides/`
-8. Do not add network, DHIS2, or Community features in Phase 1
-9. Update `.cursor/` if conventions drift
+8. If setup, stack, modules, env, quality gates, security surfaces, or contributor workflow changed, update community-health files (see `slow-journey-community-docs`)
+9. Do not add network, DHIS2, or Community features in Phase 1
+10. Update `.cursor/` if conventions drift
 
 ## Architecture
 - Logic in `lib/core/services/*`, not widgets
@@ -52,5 +54,7 @@ When behavior changes, update the relevant docs in the same change set:
 - `docs/development/*.md` (setup, env, testing, naming, localization)
 - `docs/user-guides/*.md` (friendly guides when UX/flows change)
 - `docs/plans/` only for work that is **not shipped yet**
+- `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `docs/GETTING_STARTED.md`
+- `.github/PULL_REQUEST_TEMPLATE.md` and `.github/ISSUE_TEMPLATE/`
 
 Skip docs only for pure typo/format-only edits with no behavior change.

@@ -21,6 +21,7 @@ On **every** task:
 - Follow `.cursor/skills/slow-journey-project/SKILL.md`
 - Follow `.cursor/skills/slow-journey-offline/SKILL.md` when Drift, migrations, counters, or `syncStatus` change
 - Follow `.cursor/skills/slow-journey-localization/SKILL.md` when any user-facing label, hint, snackbar, notification, or empty-state copy changes
+- Follow `.cursor/skills/slow-journey-community-docs/SKILL.md` when setup, stack, modules, env, quality gates, security surfaces, or contributor workflow change
 
 Then:
 1. Read `README.md` and `docs/README.md` for product and docs index (naming: `docs/development/naming.md`).
@@ -99,13 +100,14 @@ dart run build_runner build --delete-conflicting-outputs
 - Widgets: `test/modules/`
 - Broad change: full `flutter test`
 
-**Always** update matching `docs/**/*.md` (and `README.md` when setup/scope changed) in the same change set. Keep `docs/diagrams/` aligned when screens, providers, or services change.
+**Always** update matching `docs/**/*.md` (and `README.md` when setup/scope changed) in the same change set. Keep `docs/diagrams/` aligned when screens, providers, or services change. Keep community-health files current per `.cursor/skills/slow-journey-community-docs/SKILL.md`.
 
 ## Done criteria
 - `git status` / `git diff` reviewed
 - `flutter analyze` reports **No issues found!**
 - `flutter test` passes
 - Matching `docs/**/*.md` updated for behavior, modules, reminders, schema, or setup changes
+- Community-health files updated when setup, stack, modules, env, gates, or security surfaces changed (see `slow-journey-community-docs`)
 - Generated Drift files committed when regenerated
 - Display name stays **Slow Journey** on iOS and Android
 - User-facing string changes include matching `app_en.arb` updates and `AppLocalizations` usage

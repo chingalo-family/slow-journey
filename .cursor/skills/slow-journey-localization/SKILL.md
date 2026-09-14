@@ -61,3 +61,4 @@ flutter test
 - [ ] Stored codes unchanged
 - [ ] Tests still pass (widget tests wrap with English delegates)
 - [ ] User guide note if language or reminder copy behavior changed (`docs/user-guides/`)
+- [ ] Contributor setup (`docs/GETTING_STARTED.md`, `CONTRIBUTING.md`) if the l10n command or English-only rule changed — `.cursor/skills/slow-journey-community-docs/SKILL.md`
