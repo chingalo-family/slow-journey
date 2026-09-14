@@ -37,8 +37,8 @@ Additional languages will be decided later. Until then:
 7. Supported locale is `en` only (`MaterialApp.locale` + `AppLocalizations.supportedLocales`).
 
 ## Display vs storage
-- **Localize display only.** Stored learning-tag IDs stay English (`Mindfulness`, `Rest`, …). Show them with `L10nUtil.learningTagLabel`.
-- Do not translate profile names, user-written intentions, or reflection body text.
+- **Localize display only.** Stored learning-tag IDs stay English (`Mindfulness`, `Rest`, …). Show them with `L10nUtil.learningTagLabel`. Custom themes are stored and shown as the person typed them.
+- Do not translate profile names, user-written intentions, custom theme names, or reflection body text.
 
 ## Anti-patterns
 - Hardcoded `'Save'`, titles, snackbars, hints in widgets
