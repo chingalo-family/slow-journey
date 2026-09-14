@@ -152,6 +152,16 @@ class SettingsState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> activateDefaultReminders() async {
+    await prefs.ensureReminderDefaultsPersisted();
+    load();
+    if (!morningOn && !eveningOn) {
+      return;
+    }
+    await notifications.requestPermissionIfNeeded();
+    await notifications.syncFromPreferences(prefs);
+  }
+
   Future<bool> setMorning({bool? on, String? time}) async {
     final nextOn = on ?? morningOn;
     if (nextOn) {
@@ -262,6 +272,7 @@ class DailyState extends ChangeNotifier {
     required int gratitude,
     String? title,
     String? photoPath,
+    List<String>? tags,
   }) async {
     await repo.completeDay(
       profileId: profileId,
@@ -271,6 +282,7 @@ class DailyState extends ChangeNotifier {
       gratitudeScore: gratitude,
       title: title,
       photoPath: photoPath,
+      tags: tags,
     );
     await load(profileId);
   }
