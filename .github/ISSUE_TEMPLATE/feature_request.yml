@@ -1,0 +1,67 @@
+name: Feature request
+description: Suggest an improvement for Slow Journey
+title: "[feat]: "
+labels: ["enhancement", "feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Phase 1 is **offline-only**. Cloud accounts, sync, and Community Circle belong in Phase 2 ([docs/plans](https://github.com/chingalo-family/slow-journey/blob/develop/docs/plans/README.md)). Please say if this request is for Phase 1 or later.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is hard or missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should the app do instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: level
+    attributes:
+      label: Level
+      description: How this request should be classified.
+      options:
+        - Feature
+        - Enhancement
+        - Additional
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Target phase
+      options:
+        - Phase 1 (offline personal loop)
+        - Phase 2 (sync / Community)
+        - Unsure
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Onboarding / PIN
+        - Intentions / Planner
+        - Evening reflection
+        - Journey feed
+        - Growth
+        - Setup / reminders / theme
+        - Notifications
+        - Accessibility / localization
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
