@@ -8,6 +8,11 @@ In one line: a calm, offline-first reflection and intention app that helps peopl
 
 Package ID: `chingalo.family.slowjourney`
 
+## Get the app
+
+- [Google Play](https://play.google.com/store/apps/details?id=chingalo.family.slowjourney)
+- [Website](https://chingalo.github.io/slow-journey-website/)
+
 ## Core features
 
 | Feature | What it is |
