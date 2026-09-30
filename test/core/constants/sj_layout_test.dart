@@ -4,31 +4,18 @@ import 'package:slowjourney/core/constants/sj_layout.dart';
 
 void main() {
   test('phone portrait keeps the floating bottom navigation', () {
-    expect(
-      SjLayout.useSideNavigation(const Size(390, 844)),
-      isFalse,
-    );
+    expect(SjLayout.useSideNavigation(const Size(390, 844)), isFalse);
   });
 
   test('phone landscape uses a navigation rail', () {
-    expect(
-      SjLayout.useSideNavigation(const Size(844, 390)),
-      isTrue,
-    );
+    expect(SjLayout.useSideNavigation(const Size(844, 390)), isTrue);
+    expect(SjLayout.isLandscape(const Size(844, 390)), isTrue);
+    expect(SjLayout.isLandscape(const Size(390, 844)), isFalse);
   });
 
   test('large and tablet screens use a navigation rail', () {
-    expect(
-      SjLayout.useSideNavigation(const Size(834, 1194)),
-      isTrue,
-    );
-    expect(
-      SjLayout.useSideNavigation(const Size(1194, 834)),
-      isTrue,
-    );
-    expect(
-      SjLayout.useSideNavigation(const Size(600, 800)),
-      isTrue,
-    );
+    expect(SjLayout.useSideNavigation(const Size(834, 1194)), isTrue);
+    expect(SjLayout.useSideNavigation(const Size(1194, 834)), isTrue);
+    expect(SjLayout.useSideNavigation(const Size(600, 800)), isTrue);
   });
 }
