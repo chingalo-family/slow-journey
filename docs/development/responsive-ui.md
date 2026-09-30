@@ -15,8 +15,10 @@ Implementation: `lib/modules/shell/app_shell.dart`, `lib/core/constants/sj_layou
 
 ## Content
 
-List screens use `SjLayout.tabBodyPaddingOf` so the extra scroll gap for the floating pill is not reserved when the rail is showing.
+List screens use `SjLayout.tabBodyPaddingOf` so the extra scroll gap for the floating pill is not reserved when the rail is showing. Empty Feed uses that padding too and scrolls on short landscape heights instead of clipping the invitation card.
 
 Journey photos stay 16:9 when that fits; on short landscape heights they cap so a single card does not fill the screen.
+
+PIN unlock is phone-first in portrait (welcome card above the in-app pad). In landscape the welcome card and pad sit side by side so the PIN boxes stay on screen.
 
 Minimum tap targets stay at Material defaults (~48 dp).

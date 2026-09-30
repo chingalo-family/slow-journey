@@ -14,7 +14,7 @@ Toggle **Muted dark** for the forest canvas with forest-surface cards, cream-sag
 
 On **Manage profile**, under **PIN and auto-lock**, enter a **four-digit PIN** in the four boxes. It saves when you type the fourth digit. If a PIN is already saved, entering four digits replaces it.
 
-When you open Slow Journey again, **Welcome back** sits in the middle of the screen with your first name. Enter the same four digits in the card. The app unlocks as soon as the last box is filled. A wrong PIN shows an error and clears the boxes so you can try again. The keyboard keeps the PIN card in view.
+When you open Slow Journey again, **Welcome back** sits in the middle of the screen with your first name. Use the on-screen number pad (not the phone keyboard) to enter the same four digits. The app unlocks as soon as the last box is filled. If today has no intentions yet and the day is still open, **Today's Intentions** opens next. The greeting matches the time of day. A wrong PIN shows an error and clears the boxes so you can try again. In landscape, the PIN boxes sit on one side and the number pad on the other so both stay visible.
 
 With a PIN saved:
 

@@ -16,10 +16,13 @@ flowchart TD
   hold --> none{Local profile?}
   none -->|No| cycle[Daily cycle primer]
   none -->|Yes locked| pin[PIN unlock]
-  none -->|Yes unlocked| shell[AppShell Feed]
+  none -->|Yes unlocked| intentions{Today open and no intentions?}
+  intentions -->|Yes| set[Today's intentions]
+  intentions -->|No| shell[AppShell Feed]
+  set --> shell
   cycle --> welcome[Create local profile]
-  welcome --> shell
-  pin --> shell
+  welcome --> set
+  pin --> intentions
 ```
 
 ## 4. PIN and auto-lock
@@ -27,9 +30,12 @@ flowchart TD
 ```mermaid
 flowchart TD
   open[Open Slow Journey] --> pinSet{PIN set?}
-  pinSet -->|No| shell[AppShell]
+  pinSet -->|No| intentions{Today open and no intentions?}
   pinSet -->|Yes cold start| unlock[PIN unlock]
-  unlock --> shell
+  unlock --> intentions
+  intentions -->|Yes| set[Today's intentions]
+  intentions -->|No| shell[AppShell]
+  set --> shell
   shell --> leave[App paused or hidden]
   leave --> back[Resume]
   back --> auto{Auto-lock on and away long enough?}
@@ -42,7 +48,7 @@ flowchart TD
 ```mermaid
 flowchart LR
   morning[Morning intentions max 3] --> planner[Planner week or month]
-  planner --> evening[Evening reflection]
+  planner --> evening[Evening reflection after 5 PM today]
   evening --> complete[Complete Day transaction]
   complete --> rest[Day complete rest screen]
   rest --> feed[Journey feed]
@@ -54,11 +60,13 @@ flowchart LR
 ```mermaid
 flowchart TD
   enter[Enter Feed or finish Get Started] --> perm[Request OS permission]
-  perm -->|Granted| sched[zonedSchedule 21 morning 07:00 + 21 evening 21:00 unless changed]
+  perm -->|Granted| sched[Repeating daily morning 07:00 + evening 21:00 unless changed]
   perm -->|Denied| blocked[Show OS blocked copy in Settings]
   setup[Setup Notifications] --> change[Change time or toggle]
   change --> sched
   resume[App resumed] --> sched
+  closed[App closed or phone restarted] --> os[OS pending reminder]
   boot[Android BOOT_COMPLETED] --> plugin[Plugin boot receiver]
-  plugin --> fire[Fire at next matching local time]
+  plugin --> os
+  os --> fire[Fire at next matching local time]
 ```

@@ -43,8 +43,10 @@ Also registered as `Provider` (not notifiers): `AppDatabase`, `JourneyRepository
 **App-level wiring:**
 
 - `main()` loads `.env`, initializes local notifications, opens Drift, then `syncFromPreferences` so reminders match stored times.
-- After the user reaches **Feed** (and after Get Started), Slow Journey requests notification permission and schedules **Plan My Day** at **07:00** and **Reflect & Celebrate** at **21:00** unless the user changed them in Setup.
+- After the user reaches **Feed** (and after Get Started), Slow Journey requests notification permission and schedules repeating **Plan My Day** at **07:00** and **Reflect & Celebrate** at **21:00** unless the user changed them in Setup. Those OS reminders keep firing when the app is closed; Android restores them after reboot.
 - `MyApp` bootstraps profile and day/feed/growth after first frame. If a PIN is set, a cold start shows `PinUnlockPage`. Auto-lock is optional: after 2, 5, or 10 minutes with the app inactive (paused or hidden), returning shows the PIN again. Switching away briefly does not lock. Reminders reschedule on resume.
+- After unlock (or a cold start with no PIN), if today has no intentions and the day is still open, `TodayIntentionsGate` opens **Today's Intentions** before **Feed**. That page can be used morning, afternoon, or evening; the greeting follows the time of day. Closing that page, or setting the day, lands on Feed. A day that already has intentions, or is already closed, goes straight to Feed.
+- Planner keeps **today's** evening reflection closed until **5:00 PM** (`DayRhythm.canOpenReflection`). A completed today can still be reopened. Past days allow intentions and reflection at any hour. Future days stay closed.
 - `AppShell` is the Phase 1 home, opening on **Feed**. Portrait phones use a floating pill; landscape and large screens use a sage navigation rail (icon + label) with a cream-sage hairline.
 
 ### Service layer (`lib/core/services/`)
@@ -53,7 +55,7 @@ Also registered as `Provider` (not notifiers): `AppDatabase`, `JourneyRepository
 |---------|------|
 | `JourneyRepository` | Profile, intentions, complete-day, feed, growth reads |
 | `PhotoCaptureService` | Gallery pick, native crop (16:9 / 4:3 / square / original), save photo file |
-| `LocalNotificationService` | Device OS reminders with a 21-day rotating copy window |
+| `LocalNotificationService` | Device OS repeating daily reminders |
 | `PreferenceService` | Onboarding flag, reminder times, auto-lock, last profile |
 
 ### Data layer

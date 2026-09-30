@@ -2,7 +2,7 @@
 
 ## Evening ritual
 
-1. From Planner, tap **Start Reflection** (or **View reflection** if you already finished).
+1. From Planner, tap **Start Reflection** (or **View reflection** if you already finished). For **today**, that button opens after **5:00 PM**. Morning and afternoon keep it closed. A **past day** can be reflected at any time, and you can still set or change that day's intentions.
 2. Write **what you learned** and **celebrations & wins**.
 3. Review **Themes**. Presets (Focus, Rest, Gratitude, and the rest of the catalog) are there from the first evening. Slow Journey also suggests chips from your words. Tap to keep them, reuse tags from earlier evenings, or tap **Add theme** for a name of your own. Custom themes show up again next time.
 4. Choose a **gratitude** face (gentler to brighter).

@@ -24,7 +24,7 @@ You can add a PIN later in Setup. Nothing is sent to a server.
 
 The four tabs sit in a floating bar at the bottom on a phone in portrait. In landscape, or on a tablet or large screen, they sit along the left as a navigation rail with an icon and label, and a soft sage line beside the page.
 
-After setup (and after PIN unlock), the first tab is **Feed**.
+After setup, and again each time you open the app and unlock it, Slow Journey opens **Today's Intentions** when today has no intentions yet and the day is still open. You can set them in the morning, afternoon, or evening. The greeting follows the time of day. Set up to three, or close the page. You then land on **Feed**. If today already has intentions, or you already closed the day, Feed opens directly.
 
 | Tab | What it is for |
 |-----|----------------|
@@ -35,7 +35,7 @@ After setup (and after PIN unlock), the first tab is **Feed**.
 
 ## A typical day
 
-1. In the morning, set up to three intentions (or open Planner if you skipped that screen).
+1. When you open the app, set up to three intentions if today does not have them yet (or open Planner later if you closed that screen).
 2. Check items off during the day.
-3. In the evening, start **Reflect & Celebrate** and complete the day.
+3. After **5:00 PM**, start **Reflect & Celebrate** and complete the day. Before then, today's reflection stays closed. A past day can take intentions or a reflection at any hour.
 4. Tomorrow, the streak grows if you completed consecutive days.
