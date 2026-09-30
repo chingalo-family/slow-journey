@@ -1,4 +1,4 @@
-# Phase 2 — sync and Community
+# Phase 2 - sync and Community
 
 Working plan. **Not shipped.** Phase 1 offline loop stays the default; network is additive.
 

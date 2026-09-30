@@ -22,7 +22,7 @@ You can change them later the same day. Empty slots are ignored.
 ## During the day
 
 - Tick an intention when you have honored it. Incomplete items do not punish you.
-- **Today's Wisdom** is a local quote — it does not need the internet.
+- **Today's Wisdom** is a local quote - it does not need the internet.
 - **Start Reflection** for today stays closed through the morning and afternoon. It opens after **5:00 PM**. If you already closed today, **View reflection** stays available.
 - On a past day, **Set intentions** and **Start Reflection** (or **View reflection**) are both available.
 

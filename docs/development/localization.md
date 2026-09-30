@@ -1,6 +1,6 @@
 # Localization (English first)
 
-Slow Journey ships English UI via Flutter **gen-l10n**. A second locale is not decided yet — do not add `app_xx.arb` until asked.
+Slow Journey ships English UI via Flutter **gen-l10n**. A second locale is not decided yet - do not add `app_xx.arb` until asked.
 
 ## Supported locales
 

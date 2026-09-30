@@ -60,9 +60,9 @@ Also registered as `Provider` (not notifiers): `AppDatabase`, `JourneyRepository
 
 ### Data layer
 
-- **SQLite** via Drift (`slow_journey_app_db.db`) — see [offline storage](./offline-storage.md)
-- **SharedPreferences** — reminder toggles/times, theme cache, session lock flags
-- **No HTTP** in Phase 1 — see [data sync](./data-sync.md)
+- **SQLite** via Drift (`slow_journey_app_db.db`) - see [offline storage](./offline-storage.md)
+- **SharedPreferences** - reminder toggles/times, theme cache, session lock flags
+- **No HTTP** in Phase 1 - see [data sync](./data-sync.md)
 
 ## Project layout
 

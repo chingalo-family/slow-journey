@@ -18,7 +18,7 @@ Match neighbors: `*_state.dart` / `*State`, `*_service.dart` / `*Service`, `*_ut
 
 ## What to name after
 
-- **Say what it is in the domain.** `selectedIso`, `currentStreak` — not `data`, `tmp`, `val`.
+- **Say what it is in the domain.** `selectedIso`, `currentStreak` - not `data`, `tmp`, `val`.
 - **Booleans** start with `is`, `has`, `can`: `dayComplete`, `hasPin`, `morningOn`.
 - **Functions** are verb phrases: `completeDay`, `setMyDay`, `syncFromPreferences`.
 - **Classes** are nouns: `JourneyRepository`, not `Helper`.

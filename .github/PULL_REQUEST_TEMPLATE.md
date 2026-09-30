@@ -4,12 +4,12 @@
 
 ## Type of change
 
-- [ ] `feat` — new behavior
-- [ ] `fix` — bug fix
-- [ ] `docs` — documentation only
-- [ ] `refactor` — no intended behavior change
-- [ ] `test` — tests only
-- [ ] `chore` — tooling, deps, or housekeeping
+- [ ] `feat` - new behavior
+- [ ] `fix` - bug fix
+- [ ] `docs` - documentation only
+- [ ] `refactor` - no intended behavior change
+- [ ] `test` - tests only
+- [ ] `chore` - tooling, deps, or housekeeping
 
 ## Level
 

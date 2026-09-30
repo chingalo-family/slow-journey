@@ -5,7 +5,7 @@ description: >-
   catalogs. Use when adding or changing user-facing labels, buttons, dialogs,
   snackbars, hints, notifications, empty states, or wisdom quotes; or when the
   user mentions i18n, l10n, localization, translation, or ARB. Additional
-  languages are not decided yet — keep English as the template and do not add
+  languages are not decided yet - keep English as the template and do not add
   a second locale until asked.
 ---
 
@@ -61,4 +61,4 @@ flutter test
 - [ ] Stored codes unchanged
 - [ ] Tests still pass (widget tests wrap with English delegates)
 - [ ] User guide note if language or reminder copy behavior changed (`docs/user-guides/`)
-- [ ] Contributor setup (`docs/GETTING_STARTED.md`, `CONTRIBUTING.md`) if the l10n command or English-only rule changed — `.cursor/skills/slow-journey-community-docs/SKILL.md`
+- [ ] Contributor setup (`docs/GETTING_STARTED.md`, `CONTRIBUTING.md`) if the l10n command or English-only rule changed - `.cursor/skills/slow-journey-community-docs/SKILL.md`

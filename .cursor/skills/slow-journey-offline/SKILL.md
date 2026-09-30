@@ -40,7 +40,7 @@ DB file: `slow_journey_app_db.db`
 
 Narrative docs: `docs/architecture/offline-storage.md`. If DB file name, Phase 1 sync story, or security-relevant storage changes, also follow `.cursor/skills/slow-journey-community-docs/SKILL.md`.
 
-## Workflow — schema change
+## Workflow - schema change
 ```
 - [ ] Table updated
 - [ ] Migration appended

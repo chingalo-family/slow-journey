@@ -1,8 +1,8 @@
-# Slow Journey — Documentation
+# Slow Journey - Documentation
 
 Technical documentation for the **Slow Journey** Flutter app (`1.0.0+1`). Product intro and core features: [root README](../README.md).
 
-**Pause · Reflect · Grow** — a calm, offline-first intention and reflection loop. Phase 1 has no HTTP, DHIS2, or Community. Display name: **Slow Journey**. Package id: `chingalo.family.slowjourney`.
+**Pause · Reflect · Grow** - a calm, offline-first intention and reflection loop. Phase 1 has no HTTP, DHIS2, or Community. Display name: **Slow Journey**. Package id: `chingalo.family.slowjourney`.
 
 ## Architecture
 
@@ -20,7 +20,7 @@ Working documents for work that is **not shipped yet**. After implementation, up
 | Document | Description |
 |----------|-------------|
 | [Plans index](./plans/README.md) | Index of implementation plans |
-| [Phase 2 — sync and Community](./plans/phase-2-community-and-sync.md) | Cloud account, two-way sync, Community Circle |
+| [Phase 2 - sync and Community](./plans/phase-2-community-and-sync.md) | Cloud account, two-way sync, Community Circle |
 
 ## Features
 
@@ -62,6 +62,6 @@ Keep `docs/diagrams/` in sync when startup, navigation, or module wiring changes
 
 ## Quick links
 
-- [Root README](../README.md) — product overview and getting started
-- [`.env.example`](../.env.example) — environment template
-- [`pubspec.yaml`](../pubspec.yaml) — dependencies and app version
+- [Root README](../README.md) - product overview and getting started
+- [`.env.example`](../.env.example) - environment template
+- [`pubspec.yaml`](../pubspec.yaml) - dependencies and app version

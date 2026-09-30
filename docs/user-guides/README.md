@@ -1,4 +1,4 @@
-# Slow Journey — User Guides
+# Slow Journey - User Guides
 
 Friendly guides for people who use the app day to day (not developers).
 
@@ -19,7 +19,7 @@ Friendly guides for people who use the app day to day (not developers).
 
 ## Tips for trainers
 
-1. Start with **Getting started**. Everything stays on this device — there is no account to create online.
+1. Start with **Getting started**. Everything stays on this device - there is no account to create online.
 2. Show **Feed** as home after setup, then **Planner** for the day's intentions and **evening reflection** as how a day becomes complete.
 3. Mention **airplane mode**: the app is meant to work without internet.
 4. Walk through **Setup → Notifications** and the system permission prompt.
