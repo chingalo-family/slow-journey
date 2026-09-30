@@ -50,6 +50,16 @@ class _PlannerPageState extends State<PlannerPage> {
     final profile = context.watch<ProfileState>().profile;
     final quote = QuotePack.forDate(daily.selectedDay, l10n);
     final next = daily.nextKind();
+    final now = DateTime.now();
+    final canEditIntentions = DayRhythm.canEditIntentions(
+      selectedDay: daily.selectedDay,
+      now: now,
+    );
+    final canOpenReflection = DayRhythm.canOpenReflection(
+      selectedDay: daily.selectedDay,
+      now: now,
+      dayComplete: daily.dayComplete,
+    );
     final first = DayRhythm.firstName(
       profile?.name ?? '',
       l10n.greetingFriend,
@@ -76,12 +86,16 @@ class _PlannerPageState extends State<PlannerPage> {
         actions: [
           IconButton(
             tooltip: l10n.editIntentions,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const MorningIntentionsPage()),
-              );
-            },
+            onPressed: canEditIntentions
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MorningIntentionsPage(),
+                      ),
+                    );
+                  }
+                : null,
             icon: const Icon(Icons.edit_outlined),
           ),
         ],
@@ -139,14 +153,16 @@ class _PlannerPageState extends State<PlannerPage> {
                       const SizedBox(height: 12),
                       SjGhostButton(
                         label: l10n.setIntentions,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const MorningIntentionsPage(),
-                            ),
-                          );
-                        },
+                        onPressed: canEditIntentions
+                            ? () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const MorningIntentionsPage(),
+                                  ),
+                                );
+                              }
+                            : null,
                       ),
                     ],
                   )
@@ -156,10 +172,13 @@ class _PlannerPageState extends State<PlannerPage> {
                         IntentionRow(
                           label: item.text,
                           completed: item.isCompleted,
-                          onToggle: () {
-                            if (profile == null) return;
-                            context.read<DailyState>().toggle(profile.id, item);
-                          },
+                          onToggle: canEditIntentions && profile != null
+                              ? () {
+                                  context
+                                      .read<DailyState>()
+                                      .toggle(profile.id, item);
+                                }
+                              : null,
                         ),
                     ],
                   ),
@@ -173,14 +192,9 @@ class _PlannerPageState extends State<PlannerPage> {
             mist: true,
             padding: EdgeInsets.zero,
             child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const EveningReflectionPage(),
-                  ),
-                );
-              },
+              onTap: canOpenReflection
+                  ? () => _openReflection(context)
+                  : null,
               child: Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
@@ -194,12 +208,13 @@ class _PlannerPageState extends State<PlannerPage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      daily.dayComplete
-                          ? l10n.todayCompleteRest
-                          : (DayRhythm.momentFor(DateTime.now()) ==
-                                  DayMoment.evening
-                              ? l10n.waitingEvening
-                              : l10n.nextCloseDayBody),
+                      _reflectionHint(
+                        l10n,
+                        dayComplete: daily.dayComplete,
+                        canOpenReflection: canOpenReflection,
+                        selectedDay: daily.selectedDay,
+                        now: now,
+                      ),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
@@ -208,14 +223,9 @@ class _PlannerPageState extends State<PlannerPage> {
                       label: daily.dayComplete
                           ? l10n.viewReflection
                           : l10n.startReflection,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const EveningReflectionPage(),
-                          ),
-                        );
-                      },
+                      onPressed: canOpenReflection
+                          ? () => _openReflection(context)
+                          : null,
                     ),
                   ],
                 ),
@@ -240,6 +250,38 @@ class _PlannerPageState extends State<PlannerPage> {
     }
   }
 
+  String _reflectionHint(
+    AppLocalizations l10n, {
+    required bool dayComplete,
+    required bool canOpenReflection,
+    required DateTime selectedDay,
+    required DateTime now,
+  }) {
+    if (dayComplete) {
+      return AppDate.isSameDay(selectedDay, now)
+          ? l10n.todayCompleteRest
+          : l10n.nextRestBody;
+    }
+    if (canOpenReflection) {
+      if (AppDate.isSameDay(selectedDay, now) &&
+          DayRhythm.momentFor(now) == DayMoment.evening) {
+        return l10n.waitingEvening;
+      }
+      return l10n.nextCloseDayBody;
+    }
+    if (AppDate.dateOnly(selectedDay).isAfter(AppDate.dateOnly(now))) {
+      return l10n.nextFutureBody;
+    }
+    return l10n.reflectionOpensThisEvening;
+  }
+
+  void _openReflection(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const EveningReflectionPage()),
+    );
+  }
+
   void _openNext(BuildContext context, DayNextKind kind) {
     if (kind == DayNextKind.setIntentions) {
       Navigator.push(
@@ -251,10 +293,7 @@ class _PlannerPageState extends State<PlannerPage> {
     if (kind == DayNextKind.closeTheDay ||
         kind == DayNextKind.closePastDay ||
         kind == DayNextKind.rest) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const EveningReflectionPage()),
-      );
+      _openReflection(context);
     }
   }
 }

@@ -33,9 +33,7 @@ class JourneyFeedPage extends StatelessWidget {
           },
         ),
         title: Text(l10n.yourJourney),
-        actions: [
-          SjStreakChip(streak: streak),
-        ],
+        actions: [SjStreakChip(streak: streak)],
       ),
       body: feed.items.isEmpty
           ? const _EmptyFeed()
@@ -72,44 +70,57 @@ class _EmptyFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(28, 24, 28, 120),
-        child: SjCard(
-          mist: true,
-          padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const LeafMark(size: 64),
-              const SizedBox(height: 16),
-              Text(
-                context.l10n.firstReflectionTonight,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
+    final bodyPadding = SjLayout.tabBodyPaddingOf(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          padding: bodyPadding,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - bodyPadding.vertical).clamp(
+                0.0,
+                double.infinity,
               ),
-              const SizedBox(height: 8),
-              Text(
-                context.l10n.emptyFeedHint,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 20),
-              SjGhostButton(
-                label: context.l10n.emptyFeedAction,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const MorningIntentionsPage(),
+            ),
+            child: Center(
+              child: SjCard(
+                mist: true,
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LeafMark(size: 64),
+                    const SizedBox(height: 16),
+                    Text(
+                      context.l10n.firstReflectionTonight,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                  );
-                },
+                    const SizedBox(height: 8),
+                    Text(
+                      context.l10n.emptyFeedHint,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 20),
+                    SjGhostButton(
+                      label: context.l10n.emptyFeedAction,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const MorningIntentionsPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -126,8 +137,8 @@ class _FeedCard extends StatelessWidget {
     final title = item.title?.trim().isNotEmpty == true
         ? item.title!
         : (item.learning.isEmpty
-            ? context.l10n.eveningReflectionFallbackTitle
-            : item.learning);
+              ? context.l10n.eveningReflectionFallbackTitle
+              : item.learning);
     final summary = item.learning.isEmpty ? item.wins : item.learning;
     return SjCard(
       padding: EdgeInsets.zero,

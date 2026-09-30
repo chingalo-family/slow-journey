@@ -6,8 +6,10 @@ class SjLayout {
   static const tabScrollBottom = 108.0;
   static const sideNavScrollBottom = 28.0;
 
+  static bool isLandscape(Size size) => size.width > size.height;
+
   static bool useSideNavigation(Size size) {
-    if (size.width > size.height) return true;
+    if (isLandscape(size)) return true;
     return size.width >= compactMaxWidth;
   }
 

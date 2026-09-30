@@ -228,6 +228,24 @@ class DailyState extends ChangeNotifier {
         dayComplete: dayComplete,
       );
 
+  Future<bool> todayNeedsIntentions(String profileId) async {
+    final todayIso = AppDate.isoDate();
+    final todayIntentions = await repo.intentions(profileId, todayIso);
+    if (todayIntentions.isNotEmpty) {
+      return false;
+    }
+    final todayReflection = await repo.reflection(profileId, todayIso);
+    return todayReflection == null;
+  }
+
+  Future<void> showToday(String profileId) async {
+    final today = AppDate.dateOnly(DateTime.now());
+    if (selectedIso == AppDate.isoDate(today) && !loading) {
+      return;
+    }
+    await load(profileId, day: today);
+  }
+
   Future<void> load(
     String profileId, {
     DateTime? day,

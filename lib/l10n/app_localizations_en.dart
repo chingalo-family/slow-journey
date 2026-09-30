@@ -81,6 +81,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get morningIntentions => 'Morning Intentions';
 
   @override
+  String get intentionTodayTitle => 'Today\'s Intentions';
+
+  @override
   String get greetingFriend => 'friend';
 
   @override
@@ -172,7 +175,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nextPastBody =>
-      'A late reflection still counts. Consistency is returning, not being perfect.';
+      'You can set intentions or write a reflection for this day. A late close still counts.';
+
+  @override
+  String get reflectionOpensThisEvening =>
+      'Evening reflection opens after 5:00 PM.';
 
   @override
   String get addAPhoto => 'Add a photo';
@@ -550,6 +557,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pinEntrySemantics => 'Four-digit PIN';
+
+  @override
+  String get pinKeypadBackspace => 'Delete last digit';
 
   @override
   String get pinSaved =>

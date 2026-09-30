@@ -56,4 +56,29 @@ class DayRhythm {
     }
     return DayNextKind.liveTheDay;
   }
+
+  static bool canEditIntentions({
+    required DateTime selectedDay,
+    required DateTime now,
+  }) {
+    final selected = AppDate.dateOnly(selectedDay);
+    final today = AppDate.dateOnly(now);
+    return !selected.isAfter(today);
+  }
+
+  static bool canOpenReflection({
+    required DateTime selectedDay,
+    required DateTime now,
+    required bool dayComplete,
+  }) {
+    final selected = AppDate.dateOnly(selectedDay);
+    final today = AppDate.dateOnly(now);
+    if (selected.isAfter(today)) {
+      return false;
+    }
+    if (selected.isBefore(today) || dayComplete) {
+      return true;
+    }
+    return momentFor(now) == DayMoment.evening;
+  }
 }

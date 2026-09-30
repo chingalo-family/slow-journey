@@ -220,6 +220,12 @@ abstract class AppLocalizations {
   /// **'Morning Intentions'**
   String get morningIntentions;
 
+  /// No description provided for @intentionTodayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Intentions'**
+  String get intentionTodayTitle;
+
   /// No description provided for @greetingFriend.
   ///
   /// In en, this message translates to:
@@ -373,8 +379,14 @@ abstract class AppLocalizations {
   /// No description provided for @nextPastBody.
   ///
   /// In en, this message translates to:
-  /// **'A late reflection still counts. Consistency is returning, not being perfect.'**
+  /// **'You can set intentions or write a reflection for this day. A late close still counts.'**
   String get nextPastBody;
+
+  /// No description provided for @reflectionOpensThisEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reflection opens after 5:00 PM.'**
+  String get reflectionOpensThisEvening;
 
   /// No description provided for @addAPhoto.
   ///
@@ -1029,6 +1041,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Four-digit PIN'**
   String get pinEntrySemantics;
+
+  /// No description provided for @pinKeypadBackspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete last digit'**
+  String get pinKeypadBackspace;
 
   /// No description provided for @pinSaved.
   ///

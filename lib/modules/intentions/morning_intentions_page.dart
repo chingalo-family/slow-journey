@@ -101,7 +101,7 @@ class _MorningIntentionsPageState extends State<MorningIntentionsPage> {
                 icon: const Icon(Icons.close),
                 onPressed: () => Navigator.pop(context),
               ),
-        title: Text(l10n.morningIntentions),
+        title: Text(l10n.intentionTodayTitle),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),

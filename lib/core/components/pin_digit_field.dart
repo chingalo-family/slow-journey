@@ -5,6 +5,53 @@ import '../constants/app_colors.dart';
 import '../constants/app_theme.dart';
 import '../utils/pin_hasher.dart';
 
+class PinEntryController extends ChangeNotifier {
+  static final _singleDigit = RegExp(r'^\d$');
+
+  String _value = '';
+
+  String get value => _value;
+
+  void appendDigit(String digit) {
+    if (!_singleDigit.hasMatch(digit)) {
+      return;
+    }
+    if (_value.length >= PinHasher.length) {
+      return;
+    }
+    _value = '$_value$digit';
+    notifyListeners();
+  }
+
+  void deleteLastDigit() {
+    if (_value.isEmpty) {
+      return;
+    }
+    _value = _value.substring(0, _value.length - 1);
+    notifyListeners();
+  }
+
+  void clear() {
+    if (_value.isEmpty) {
+      return;
+    }
+    _value = '';
+    notifyListeners();
+  }
+
+  void replaceWith(String next) {
+    final digitsOnly = next.replaceAll(RegExp(r'[^0-9]'), '');
+    final clipped = digitsOnly.length > PinHasher.length
+        ? digitsOnly.substring(0, PinHasher.length)
+        : digitsOnly;
+    if (clipped == _value) {
+      return;
+    }
+    _value = clipped;
+    notifyListeners();
+  }
+}
+
 class PinDigitField extends StatefulWidget {
   const PinDigitField({
     super.key,
@@ -16,6 +63,8 @@ class PinDigitField extends StatefulWidget {
     this.resetGeneration = 0,
     this.semanticsLabel,
     this.boxHeight = 64,
+    this.controller,
+    this.useSystemKeyboard = true,
   });
 
   final ValueChanged<String> onCompleted;
@@ -26,43 +75,73 @@ class PinDigitField extends StatefulWidget {
   final int resetGeneration;
   final String? semanticsLabel;
   final double boxHeight;
+  final PinEntryController? controller;
+  final bool useSystemKeyboard;
 
   @override
   State<PinDigitField> createState() => _PinDigitFieldState();
 }
 
 class _PinDigitFieldState extends State<PinDigitField> {
-  late final TextEditingController _controller;
+  late final TextEditingController _textController;
   late final FocusNode _focusNode;
   var _lastEmitted = '';
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _textController = TextEditingController();
     _focusNode = FocusNode()..addListener(() => setState(() {}));
+    widget.controller?.addListener(_onExternalPinChanged);
   }
 
   @override
   void didUpdateWidget(covariant PinDigitField oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_onExternalPinChanged);
+      widget.controller?.addListener(_onExternalPinChanged);
+    }
     if (oldWidget.resetGeneration != widget.resetGeneration) {
-      _controller.clear();
+      _textController.clear();
       _lastEmitted = '';
-      _focusNode.requestFocus();
+      if (widget.useSystemKeyboard) {
+        _focusNode.requestFocus();
+      }
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    widget.controller?.removeListener(_onExternalPinChanged);
+    _textController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
+  void _onExternalPinChanged() {
+    final value = widget.controller?.value ?? '';
+    if (_textController.text != value) {
+      _textController.value = TextEditingValue(
+        text: value,
+        selection: TextSelection.collapsed(offset: value.length),
+      );
+    }
+    _emitIfNeeded(value);
+  }
+
   void _onChanged(String value) {
+    widget.controller?.replaceWith(value);
+    _emitIfNeeded(value);
+  }
+
+  void _emitIfNeeded(String value) {
     setState(() {});
     widget.onChanged?.call(value);
+    if (value.isEmpty) {
+      _lastEmitted = '';
+      return;
+    }
     if (value.length == PinHasher.length && value != _lastEmitted) {
       _lastEmitted = value;
       widget.onCompleted(value);
@@ -72,28 +151,37 @@ class _PinDigitFieldState extends State<PinDigitField> {
   @override
   Widget build(BuildContext context) {
     final hasError = widget.errorText != null && widget.errorText!.isNotEmpty;
-    final filled = _controller.text.length;
+    final filled =
+        widget.controller?.value.length ?? _textController.text.length;
+    final showSystemKeyboard = widget.useSystemKeyboard;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Semantics(
           label: widget.semanticsLabel,
-          textField: true,
+          textField: showSystemKeyboard,
           child: GestureDetector(
-            onTap: widget.enabled ? () => _focusNode.requestFocus() : null,
+            onTap: widget.enabled && showSystemKeyboard
+                ? () => _focusNode.requestFocus()
+                : null,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 IgnorePointer(
                   child: Row(
                     children: [
-                      for (var digitIndex = 0;
-                          digitIndex < PinHasher.length;
-                          digitIndex++) ...[
+                      for (
+                        var digitIndex = 0;
+                        digitIndex < PinHasher.length;
+                        digitIndex++
+                      ) ...[
                         if (digitIndex > 0) const SizedBox(width: 10),
                         Expanded(
                           child: _PinBox(
                             filled: digitIndex < filled,
-                            focused: widget.enabled &&
+                            focused:
+                                widget.enabled &&
+                                showSystemKeyboard &&
                                 _focusNode.hasFocus &&
                                 digitIndex ==
                                     filled.clamp(0, PinHasher.length - 1),
@@ -105,37 +193,38 @@ class _PinDigitFieldState extends State<PinDigitField> {
                     ],
                   ),
                 ),
-                Positioned.fill(
-                  child: TextField(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    enabled: widget.enabled,
-                    autofocus: widget.autofocus,
-                    keyboardType: TextInputType.number,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    showCursor: false,
-                    style: const TextStyle(
-                      color: Colors.transparent,
-                      fontSize: 1,
+                if (showSystemKeyboard)
+                  Positioned.fill(
+                    child: TextField(
+                      controller: _textController,
+                      focusNode: _focusNode,
+                      enabled: widget.enabled,
+                      autofocus: widget.autofocus,
+                      keyboardType: TextInputType.number,
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      showCursor: false,
+                      style: const TextStyle(
+                        color: Colors.transparent,
+                        fontSize: 1,
+                      ),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        counterText: '',
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(PinHasher.length),
+                      ],
+                      onChanged: _onChanged,
                     ),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      counterText: '',
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(PinHasher.length),
-                    ],
-                    onChanged: _onChanged,
                   ),
-                ),
               ],
             ),
           ),
@@ -177,8 +266,8 @@ class _PinBox extends StatelessWidget {
     final borderColor = hasError
         ? AppColors.error
         : focused
-            ? context.sjAccent
-            : (isDark ? AppColors.darkHairline : const Color(0xFFD7E0C8));
+        ? context.sjAccent
+        : (isDark ? AppColors.darkHairline : const Color(0xFFD7E0C8));
     return AnimatedContainer(
       duration: const Duration(milliseconds: 160),
       height: height,

@@ -7,6 +7,7 @@ import 'app_state/app_state.dart';
 import 'core/constants/app_theme.dart';
 import 'core/services/local_notification_service.dart';
 import 'core/services/preference_service.dart';
+import 'modules/intentions/today_intentions_gate.dart';
 import 'modules/onboarding/daily_cycle_page.dart';
 import 'modules/onboarding/pin_unlock_page.dart';
 import 'modules/onboarding/splash_page.dart';
@@ -112,7 +113,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               ? const DailyCyclePage()
               : profile.locked
                   ? const PinUnlockPage()
-                  : const AppShell(),
+                  : const TodayIntentionsGate(child: AppShell()),
       builder: (context, child) {
         return AnimatedTheme(
           data: theme,

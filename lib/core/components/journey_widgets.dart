@@ -105,15 +105,17 @@ class IntentionRow extends StatelessWidget {
 
   final String label;
   final bool completed;
-  final VoidCallback onToggle;
+  final VoidCallback? onToggle;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onToggle();
-      },
+      onTap: onToggle == null
+          ? null
+          : () {
+              HapticFeedback.lightImpact();
+              onToggle!();
+            },
       borderRadius: BorderRadius.circular(12),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

@@ -93,15 +93,19 @@ class LocalNotificationService {
     }
     try {
       if (Platform.isAndroid) {
-        final android = _plugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+        final android = _plugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
         final granted = await android?.requestNotificationsPermission();
         await android?.requestExactAlarmsPermission();
         return granted ?? false;
       }
       if (Platform.isIOS) {
-        final ios = _plugin.resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>();
+        final ios = _plugin
+            .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin
+            >();
         final granted = await ios?.requestPermissions(
           alert: true,
           badge: true,
@@ -123,13 +127,17 @@ class LocalNotificationService {
     }
     try {
       if (Platform.isAndroid) {
-        final android = _plugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+        final android = _plugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
         return await android?.areNotificationsEnabled() ?? true;
       }
       if (Platform.isIOS) {
-        final ios = _plugin.resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>();
+        final ios = _plugin
+            .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin
+            >();
         final options = await ios?.checkPermissions();
         return options?.isEnabled ?? false;
       }
@@ -150,19 +158,22 @@ class LocalNotificationService {
       return;
     }
     final l10n = L10nUtil.english();
+    final mode = await _androidScheduleMode();
     if (prefs.morningReminderOn) {
-      await _scheduleHorizon(
-        idStart: morningHorizonStart,
+      await _scheduleRepeatingDaily(
+        id: morningId,
         time: prefs.morningTime,
         payload: 'morning',
+        mode: mode,
         copyForDate: (date) => NotificationCopyPack.morningForDate(date, l10n),
       );
     }
     if (prefs.eveningReminderOn) {
-      await _scheduleHorizon(
-        idStart: eveningHorizonStart,
+      await _scheduleRepeatingDaily(
+        id: eveningId,
         time: prefs.eveningTime,
         payload: 'evening',
+        mode: mode,
         copyForDate: (date) => NotificationCopyPack.eveningForDate(date, l10n),
       );
     }
@@ -172,8 +183,10 @@ class LocalNotificationService {
     if (!Platform.isAndroid) {
       return;
     }
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android == null) {
       return;
     }
@@ -203,6 +216,8 @@ class LocalNotificationService {
         icon: _androidIcon,
         playSound: true,
         enableVibration: true,
+        category: AndroidNotificationCategory.reminder,
+        visibility: NotificationVisibility.public,
         styleInformation: BigTextStyleInformation(body),
       ),
       iOS: DarwinNotificationDetails(
@@ -222,8 +237,10 @@ class LocalNotificationService {
       return AndroidScheduleMode.exactAllowWhileIdle;
     }
     try {
-      final android = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       final canExact = await android?.canScheduleExactNotifications();
       if (canExact == true) {
         return AndroidScheduleMode.exactAllowWhileIdle;
@@ -241,33 +258,65 @@ class LocalNotificationService {
     }
   }
 
-  Future<void> _scheduleHorizon({
-    required int idStart,
+  Future<void> _scheduleRepeatingDaily({
+    required int id,
     required String time,
     required String payload,
+    required AndroidScheduleMode mode,
     required ReminderCopy Function(DateTime date) copyForDate,
   }) async {
     final clock = ReminderClockTime.parse(time);
-    final fires = ReminderClockTime.nextHorizonFires(
+    final fire = ReminderClockTime.nextDailyFire(
       location: tz.local,
       now: DateTime.now(),
       hour: clock.hour,
       minute: clock.minute,
-      dayCount: horizonDays,
     );
-    final mode = await _androidScheduleMode();
-    for (var dayOffset = 0; dayOffset < fires.length; dayOffset++) {
-      final fire = fires[dayOffset];
-      final copy = copyForDate(fire);
+    final copy = copyForDate(fire);
+    await _zonedScheduleRepeating(
+      id: id,
+      title: copy.title,
+      body: copy.body,
+      fire: fire,
+      payload: payload,
+      mode: mode,
+    );
+  }
+
+  Future<void> _zonedScheduleRepeating({
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime fire,
+    required String payload,
+    required AndroidScheduleMode mode,
+  }) async {
+    final details = await _details(body);
+    try {
+      await _plugin.zonedSchedule(
+        id,
+        title,
+        body,
+        fire,
+        details,
+        androidScheduleMode: mode,
+        payload: payload,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (_) {
+      if (mode == AndroidScheduleMode.inexactAllowWhileIdle) {
+        return;
+      }
       try {
         await _plugin.zonedSchedule(
-          idStart + dayOffset,
-          copy.title,
-          copy.body,
+          id,
+          title,
+          body,
           fire,
-          await _details(copy.body),
-          androidScheduleMode: mode,
+          details,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
           payload: payload,
+          matchDateTimeComponents: DateTimeComponents.time,
         );
       } catch (_) {}
     }

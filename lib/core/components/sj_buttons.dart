@@ -71,7 +71,7 @@ class SjGhostButton extends StatelessWidget {
   });
 
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +84,10 @@ class SjGhostButton extends StatelessWidget {
               ? AppColors.creamSurface
               : Colors.white,
           foregroundColor: AppColors.ink900,
+          disabledBackgroundColor: context.isDarkTheme
+              ? AppColors.creamSurface
+              : Colors.white,
+          disabledForegroundColor: AppColors.ink600,
           elevation: 0,
           shape: const StadiumBorder(),
         ),
